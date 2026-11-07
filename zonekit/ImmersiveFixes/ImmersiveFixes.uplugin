@@ -1,0 +1,18 @@
+{
+    "FileVersion":  3,
+    "Version":  1,
+    "VersionName":  "",
+    "CreatedByURL":  "",
+    "DocsURL":  "",
+    "MarketplaceURL":  "",
+    "SupportURL":  "",
+    "FriendlyName":  "ImmersiveFixes",
+    "Description":  "Small visual fixes for S.T.A.L.K.E.R. 2: sharper reflections and more.",
+    "Category":  "Game Features",
+    "CreatedBy":  "noahsemus",
+    "EnabledByDefault":  true,
+    "CanContainContent":  true,
+    "ExplicitlyLoaded":  true,
+    "BuiltInInitialFeatureState":  "Registered",
+    "Mod":  true
+}

@@ -1,0 +1,12 @@
+{
+    "name":  "ImmersiveFixes",
+    "short":  "ImmFix",
+    "repo":  "stalker2-immersive-fixes",
+    "description":  "Small visual fixes for S.T.A.L.K.E.R. 2: sharper reflections and more.",
+    "release_pak_suffix":  20,
+    "dev_pak_suffix":  30,
+    "nexus_id":  null,
+    "optional_plugins":  [
+
+                         ]
+}
