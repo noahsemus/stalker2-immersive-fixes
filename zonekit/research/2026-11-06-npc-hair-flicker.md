@@ -35,5 +35,16 @@ DLSS DLAA, DLSS-G 4x (`GSCReXFrameGeneration.ini`), `sg.HairQuality=3`.
 5. Stale motion vectors: `r.HairStrands.Strands.TransferPrevPos 1`.
 6. Sample buffer overflow in cutscene close-ups: `r.HairStrands.Visibility.MSAA.MeanSamplePerPixel 1` (retail 0.5,
    `DefaultEngine.ini:102`).
+## Test 2026-11-10
+- `ai.AgentLODBiasForCinematicsAndDialogs 0` + `r.HairStrands.ForceLOD 1`: looked fixed at first, but the flicker
+  stopped only after entering and leaving the same conversation a few times. So: a first-time load, not the LOD switch.
+- Retail `DefaultEngine.ini:257-259`: `r.HairStrands.Strands.BulkData.AsyncLoading=10`,
+  `r.HairStrands.Cards.BulkData.AsyncLoading=10` (stock -1 = synchronous), `r.HairStrands.Strands.BulkData.ReleaseAfterUse=1`.
+  Stock 5.5 `GroomResources.cpp:90-99, 917-962`: async = the LOD index <= the cvar; while the curves stream in,
+  `Allocate` reports `Loading` and the groom LOD is not drawn; a finer LOD asks for more curves and streams again;
+  loaded curves stay (no stream-out with `r.HairStrands.Streaming 0`). Fits "stops after a few entries".
+- Next test: both cvars `-1` (synchronous) right after loading a save, then talk to an NPC not seen this session.
+  Cost: a short hitch the first time a groom LOD loads.
+
 Scalability cvars (MinLOD, RasterizationScale) may be reset by a graphics settings change: re-apply on change.
 Agent working files (UE 5.5 sources, extracted assets): session scratchpad `hair\`.
