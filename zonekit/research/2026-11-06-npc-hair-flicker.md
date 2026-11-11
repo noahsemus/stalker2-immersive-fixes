@@ -45,6 +45,15 @@ DLSS DLAA, DLSS-G 4x (`GSCReXFrameGeneration.ini`), `sg.HairQuality=3`.
   loaded curves stay (no stream-out with `r.HairStrands.Streaming 0`). Fits "stops after a few entries".
 - Next test: both cvars `-1` (synchronous) right after loading a save, then talk to an NPC not seen this session.
   Cost: a short hitch the first time a groom LOD loads.
+- Result (AsyncLoading -1 both): better, but still a 1-2 frame blink on walking up and at conversation start;
+  `r.HairStrands.BoundMode 1` did not stop it.
+- Stock 5.5 `GroomManager.cpp:2729-2741`: strands resources always allocate with `Async` (hard-coded; the AsyncLoading
+  cvar only covers guides / cards), and the cvar's prefetch (`AddHairStreamingRequest`, :2307-2398) runs only for
+  game-thread forced / predicted LODs. `:2779-2785`: if the data is not ready and the face mesh LOD changed (Skinning
+  binding), the groom is not drawn that frame. So the first strands use per hairstyle and per face mesh LOD hides it.
+  Head CAR LOD0 (screen size >= 1, close-ups) is invisible, so the hair goes bald while the strands wait.
+- Next test: `r.HairStrands.MinLOD 1` (close-ups stay at LOD1 = strands + cards, as at 0.7-1.0; the cards cover the
+  wait; brows / lashes LOD1 visible) + `ai.AgentLODBiasForCinematicsAndDialogs 0` (no face LOD jump at dialogue).
 
 Scalability cvars (MinLOD, RasterizationScale) may be reset by a graphics settings change: re-apply on change.
 Agent working files (UE 5.5 sources, extracted assets): session scratchpad `hair\`.
